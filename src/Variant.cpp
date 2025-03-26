@@ -5,7 +5,7 @@
 Variant::Variant() {}
 
 template <typename T>
-void Variant::setValue(T value, ValueType type) {
+void Variant::setValue(T value) {
   if constexpr (is_same<T, bool>::value) {
     value_.bool_value = value;
     typeOfValue_ = ValueType::Bool;
@@ -18,13 +18,12 @@ void Variant::setValue(T value, ValueType type) {
   } else {
     static_assert("Unsupported type for setValue");
   }
-  typeOfValue_ = type;
 }
 
 void Variant::setValue(Variant& value) {
   typeOfValue_ = value.typeOfValue_;
   typeOfSensorData_ = value.typeOfSensorData_;
-  setValue(value.value_, value.typeOfValue_);
+  setValue(value.value_);
 }
 
 void Variant::setValueType(const ValueType typeOfValue) { typeOfValue_ = typeOfValue; }
