@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
 
-#include "Variant.hpp"
+#include "Variant.h"
 
 class Module {
  public:

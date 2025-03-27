@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Arduino.h>
+#include <stdlib.h>
 
-#include "Types.hpp"
+#include "Types.h"
 
 union Value {
   bool bool_value;

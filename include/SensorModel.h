@@ -1,5 +1,5 @@
 #pragma once
-#include "Module.hpp"
+#include "Module.h"
 
 class SensorModel : public Module {
  protected:

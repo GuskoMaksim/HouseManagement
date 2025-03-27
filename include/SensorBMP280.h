@@ -1,7 +1,7 @@
 #pragma once
 #include <GyverBME280.h>
 
-#include "SensorModel.hpp"
+#include "SensorModel.h"
 
 class SensorBMP280 : public SensorModel {
  private:

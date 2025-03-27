@@ -1,4 +1,4 @@
-#include "SensorBMP280.hpp"
+#include "SensorBMP280.h"
 
 SensorBMP280::SensorBMP280(ValueType type, uint8_t module_address)
     : module_address_(module_address),

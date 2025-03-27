@@ -1,6 +1,6 @@
-#include "Variant.hpp"
+#include "Variant.h"
 
-#include "TypeTraits.hpp"
+#include "TypeTraits.h"
 
 Variant::Variant() {}
 
