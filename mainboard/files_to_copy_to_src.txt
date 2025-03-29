@@ -1,0 +1,4 @@
+../include/Module.cpp
+../include/SensorModel.сpp
+../src/ManagerSensor.cpp
+../include/Variant.cpp

@@ -1,2 +1,8 @@
 .pio
 .vscode
+
+# mainboard
+mainboard/include/*
+mainboard/src/*
+!mainboard/include/init.h
+!mainboard/src/main.cpp
