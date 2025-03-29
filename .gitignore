@@ -6,3 +6,5 @@ mainboard/include/*
 mainboard/src/*
 !mainboard/include/init.h
 !mainboard/src/main.cpp
+!mainboard/include/ManagerMqtt.h
+!mainboard/src/ManagerMqtt.cpp
