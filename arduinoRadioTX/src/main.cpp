@@ -5,7 +5,7 @@
 #include "ManagerTX.h"
 #include "SensorBMP280.h"
 
-constexpr uint32_t refresh_interval_ms = 5000;
+constexpr uint32_t refresh_interval_ms = 10000;
 uint32_t timer_to_update_ms = refresh_interval_ms + 1;
 
 constexpr uint32_t refresh_interval_send_ms = 10000;

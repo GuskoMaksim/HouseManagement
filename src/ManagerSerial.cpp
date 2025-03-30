@@ -4,7 +4,7 @@
 #include "TimerModel.h"
 
 ManagerSerial::ManagerSerial() {
-  Serial.begin(9600);
+  //
   Serial.println("Start");
 }
 
@@ -25,8 +25,7 @@ void ManagerSerial::SendDebugDataToSerialPort() {
   }
   if (data_) {
     for (int i = 0; i < data_->GetDataFromSensors().getSize(); ++i) {
-      Serial.print(
-          static_cast<uint8_t>(data_->GetDataFromSensors().get(i).getSensorDataType()));
+      Serial.print(static_cast<uint8_t>(data_->GetDataFromSensors().get(i).getSensorDataType()));
       Serial.print(" - ");
       Serial.print(data_->GetDataFromSensors().get(i).getValue<float>());
       Serial.println("   ");

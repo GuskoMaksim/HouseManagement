@@ -1,5 +1,10 @@
 ../include/Types.h
 ../include/Module.h
+../include/TypeTraits.h
+../include/TimerModel.h
 ../include/SensorModel.h
 ../include/ManagerSensor.h
+../include/ManagerSerial.h
+../include/ManagerRX.h
 ../include/Variant.h
+../include/SensorBME280.h

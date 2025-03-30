@@ -13,12 +13,21 @@ void Variant::setValue(Variant& value) {
     value_.int32_value = value.value_.int32_value;
 }
 
-void Variant::setValueType(const ValueType typeOfValue) { typeOfValue_ = typeOfValue; }
+void Variant::setValueType(const ValueType typeOfValue) {
+  //
+  typeOfValue_ = typeOfValue;
+}
 
 void Variant::setSensorDataType(const SensorDataType typeOfSensorData) {
   typeOfSensorData_ = typeOfSensorData;
 }
 
-const ValueType& Variant::getValueType() const { return typeOfValue_; }
+const ValueType& Variant::getValueType() const {
+  //
+  return typeOfValue_;
+}
 
-const SensorDataType& Variant::getSensorDataType() const { return typeOfSensorData_; }
+const SensorDataType& Variant::getSensorDataType() const {
+  //
+  return typeOfSensorData_;
+}

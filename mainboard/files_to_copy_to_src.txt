@@ -1,4 +1,7 @@
-../include/Module.cpp
-../include/SensorModel.сpp
+../src/Module.cpp
+../src/TimerModel.cpp
 ../src/ManagerSensor.cpp
-../include/Variant.cpp
+../src/ManagerSerial.cpp
+../src/ManagerRX.cpp
+../src/Variant.cpp
+../src/SensorBME280.cpp

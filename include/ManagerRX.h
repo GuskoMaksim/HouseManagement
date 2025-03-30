@@ -90,13 +90,13 @@ class ManagerRX {
 
  public:
   List<StoredDate*> storedDate_;
-  void Update();
+  void Update(bool debug = false);
   void setMaxTimeBetweenRetrieval(uint32_t hour);
   ~ManagerRX() = default;
 };
 
 template <uint8_t RX_PIN, uint16_t RX_BUF>
-void ManagerRX<RX_PIN, RX_BUF>::Update() {
+void ManagerRX<RX_PIN, RX_BUF>::Update(bool debug) {
   if (rx.tick()) {
     ReceivedData data;
     if (rx.readData(data)) {
@@ -106,9 +106,9 @@ void ManagerRX<RX_PIN, RX_BUF>::Update() {
       } else {
         StoredDate* sdNew = nullptr;
         for (int i = 0; i < storedDate_.getSize(); ++i) {
-          sdNew = storedDate_.getValue(i);
+          sdNew = storedDate_.get(i);
           if (sdNew->idDevice == data.idDevice_ && sdNew->messageType == data.messageType_ &&
-              sdNew->data.typeOfSensorData == data.typeOfSensorData_) {
+              sdNew->data.getSensorDataType() == data.typeOfSensorData_) {
             find = true;
             break;
           }
@@ -123,41 +123,39 @@ void ManagerRX<RX_PIN, RX_BUF>::Update() {
           storedDate_.add(sdNew);
         }
         data.setVariantFromData(sdNew, data);
-        ////////////////////////////////////////DELETE
-        // Serial.print("data.pass: ");
-        // Serial.println(data.pass_);
-        // Serial.print("CRC: ");
-        // Serial.println(data.calcCRC(data));
-        // Serial.print("data.CRC: ");
-        // Serial.println(data.CRC_);
-        // Serial.print("sdNew.idDevice: ");
-        // Serial.println(sdNew->idDevice);
-        // Serial.print("sdNew->messageType: ");
-        // Serial.println((uint8_t)sdNew->messageType);
-        // Serial.print("sdNew->v.typeOfValue: ");
-        // Serial.println((uint8_t)sdNew->data.typeOfValue);
-        // Serial.print("sdNew->data.typeOfSensorData: ");
-        // Serial.println((uint8_t)sdNew->data.typeOfSensorData);
-        // Serial.print("sdNew->v.getValue: ");
-        // // Serial.println(sdNew->data.getValue<float>());
-        // Serial.print("sdNew->lastGet: ");
-        // Serial.println(sdNew->lastGet);
-        // Serial.println("-------------------------------");
-        // Serial.println();
-        ////////////////////////////////////////////
+        if (debug) {
+          Serial.print("data.value_: ");
+          Serial.println(String(data.value_.float_value));
+          Serial.print("data.pass: ");
+          Serial.println(data.pass_);
+          Serial.print("CRC: ");
+          Serial.println(data.calcCRC(data));
+          Serial.print("data.CRC: ");
+          Serial.println(data.CRC_);
+          Serial.print("sdNew.idDevice: ");
+          Serial.println(sdNew->idDevice);
+          Serial.print("sdNew->messageType: ");
+          Serial.println((uint8_t)sdNew->messageType);
+          Serial.print("sdNew->v.typeOfValue: ");
+          Serial.println((uint8_t)sdNew->data.getValueType());
+          Serial.print("sdNew->data.typeOfSensorData: ");
+          Serial.println((uint8_t)sdNew->data.getSensorDataType());
+          Serial.print("sdNew->lastGet: ");
+          Serial.println(sdNew->lastGet);
+          Serial.println("-------------------------------");
+          Serial.println();
+        }
       }
     } else
       Serial.println("Data error");
   }
-  // delete
-  // if (millis() - send_update_ms > refresh_send_ms) {
-  //     send_update_ms = millis();
-  //     Serial.print("Size: ");
-  //     Serial.println(storedDate_.getSize());
-  //     Serial.println("-----------------------");
-  //     Serial.println();
-  // }
-  //
+  if (debug && millis() - send_update_ms > refresh_send_ms) {
+    send_update_ms = millis();
+    Serial.print("Size: ");
+    Serial.println(storedDate_.getSize());
+    Serial.println("-----------------------");
+    Serial.println();
+  }
 };
 
 template <uint8_t RX_PIN, uint16_t RX_BUF>
