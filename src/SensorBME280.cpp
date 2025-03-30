@@ -18,9 +18,9 @@ bool SensorBME280::Init() {
     do {
       Update();
     } while ((m_temperature.getValue<float>() < 1.0f && m_temperature.getValue<float>() > -1.0f));
-    m_averageTemperature.setValue(m_temperature);
-    m_averagePressure.setValue(m_pressure);
-    m_averageHumidity.setValue(m_humidity);
+    m_averageTemperature.setValue(0.0f);
+    m_averagePressure.setValue(0.0f);
+    m_averageHumidity.setValue(0.0f);
     Serial.println("SensorBME280::Init()");
     return true;
   }
@@ -28,13 +28,16 @@ bool SensorBME280::Init() {
 
 void SensorBME280::Update() {
   m_temperature.setValue(static_cast<float>(m_BME280.readTemperature()));
-  m_pressure.setValue(static_cast<float>(m_BME280.readPressure() / m_mmColumn));
+  m_pressure.setValue(static_cast<float>(pressureToMmHg(m_BME280.readPressure())));
   m_humidity.setValue(static_cast<float>(m_BME280.readHumidity()));
 };
 
 Variant& SensorBME280::getData(SensorDataType type) {
   switch (type) {
     case SensorDataType::Temperature:
+      if (m_averageTemperature.getValue<float>() == 0.0f) {
+        m_averageTemperature.setValue(m_temperature);
+      }
       m_averageTemperature.setValue(
           static_cast<float>(
               (m_averageTemperature.getValue<float>() * 7.0f + m_temperature.getValue<float>())) /
@@ -42,12 +45,18 @@ Variant& SensorBME280::getData(SensorDataType type) {
       return m_averageTemperature;
       break;
     case SensorDataType::Pressure:
+      if (m_averagePressure.getValue<float>() == 0.0f) {
+        m_averagePressure.setValue(m_pressure);
+      }
       m_averagePressure.setValue(static_cast<float>((m_averagePressure.getValue<float>() * 7.0f +
                                                      m_pressure.getValue<float>())) /
                                  8.0f);
       return m_averagePressure;
       break;
     case SensorDataType::Humidity:
+      if (m_averageHumidity.getValue<float>() == 0.0f) {
+        m_averageHumidity.setValue(m_humidity);
+      }
       m_averageHumidity.setValue(static_cast<float>((m_averageHumidity.getValue<float>() * 7.0f +
                                                      m_humidity.getValue<float>())) /
                                  8.0f);

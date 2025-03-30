@@ -11,8 +11,6 @@ bool ManagerSensor::AddSensor(SensorModel* sensor) {
   }
   if (sensor->Init()) {
     listSensor_.add(sensor);
-    addToListAllDataFromSensor(sensor);
-    Update();
     return true;
   }
   return false;
@@ -28,11 +26,15 @@ void ManagerSensor::addToListAllDataFromSensor(SensorModel* sensor) {
 }
 
 void ManagerSensor::Update() {
-  listData_.clear();
   for (int i = 0; i < listSensor_.getSize(); ++i) {
-    addToListAllDataFromSensor(listSensor_.get(i));
     listSensor_.get(i)->Update();
   }
 }
 
-List<Variant>& ManagerSensor::GetDataFromSensors() { return listData_; }
+List<Variant>& ManagerSensor::GetDataFromSensors() {
+  listData_.clear();
+  for (int i = 0; i < listSensor_.getSize(); ++i) {
+    addToListAllDataFromSensor(listSensor_.get(i));
+  }
+  return listData_;
+}

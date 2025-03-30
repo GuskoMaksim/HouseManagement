@@ -16,21 +16,24 @@ bool SensorBMP280::Init() {
     do {
       Update();
     } while ((m_temperature.getValue<float>() < 1.0f && m_temperature.getValue<float>() > -1.0f));
-    m_averageTemperature.setValue(m_temperature);
-    m_averagePressure.setValue(m_pressure);
+    m_averageTemperature.setValue(0.0f);
+    m_averagePressure.setValue(0.0f);
     Serial.println("BME280 module added to the device!");
     return true;
   }
 };
 
 void SensorBMP280::Update() {
-  m_temperature.setValue(BME280_.readTemperature());
-  m_pressure.setValue(BME280_.readPressure() / mmColumn_);
+  m_temperature.setValue(static_cast<float>(BME280_.readTemperature()));
+  m_pressure.setValue(static_cast<float>(pressureToMmHg(BME280_.readPressure())));
 };
 
 Variant& SensorBMP280::getData(SensorDataType type) {
   switch (type) {
     case SensorDataType::Temperature:
+      if (m_averageTemperature.getValue<float>() == 0.0f) {
+        m_averageTemperature.setValue(m_temperature);
+      }
       m_averageTemperature.setValue(
           static_cast<float>(
               (m_averageTemperature.getValue<float>() * 5.0f + m_temperature.getValue<float>())) /
@@ -38,6 +41,9 @@ Variant& SensorBMP280::getData(SensorDataType type) {
       return m_averageTemperature;
       break;
     case SensorDataType::Pressure:
+      if (m_averagePressure.getValue<float>() == 0.0f) {
+        m_averagePressure.setValue(m_pressure);
+      }
       m_averagePressure.setValue(static_cast<float>((m_averagePressure.getValue<float>() * 5.0f +
                                                      m_pressure.getValue<float>())) /
                                  6.0f);

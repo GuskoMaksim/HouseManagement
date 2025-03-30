@@ -8,3 +8,8 @@ mainboard/src/*
 !mainboard/src/main.cpp
 !mainboard/include/ManagerMqtt.h
 !mainboard/src/ManagerMqtt.cpp
+
+# mainboard
+arduinoRadioTX/include/*
+arduinoRadioTX/src/*
+!arduinoRadioTX/src/main.cpp
