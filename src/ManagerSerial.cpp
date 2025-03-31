@@ -3,8 +3,8 @@
 #include "ManagerSensor.h"
 #include "TimerModel.h"
 
-ManagerSerial::ManagerSerial() {
-  //
+ManagerSerial::ManagerSerial(const int speed) {
+  Serial.begin(speed);
   Serial.println("Start");
 }
 
@@ -25,10 +25,24 @@ void ManagerSerial::SendDebugDataToSerialPort() {
   }
   if (data_) {
     for (int i = 0; i < data_->GetDataFromSensors().getSize(); ++i) {
-      Serial.print(static_cast<uint8_t>(data_->GetDataFromSensors().get(i).getSensorDataType()));
-      Serial.print(" - ");
-      Serial.print(data_->GetDataFromSensors().get(i).getValue<float>());
-      Serial.println("   ");
+      String s = "";
+      switch (data_->GetDataFromSensors().get(i).getSensorDataType()) {
+        case SensorDataType::Temperature:
+          s += "Temperature";
+          break;
+        case SensorDataType::Pressure:
+          s += "Pressure";
+          break;
+        case SensorDataType::Humidity:
+          s += "Humidity";
+          break;
+        default:
+          s += String(static_cast<uint8_t>(data_->GetDataFromSensors().get(i).getSensorDataType()));
+          break;
+      }
+      s += " - " + String(data_->GetDataFromSensors().get(i).getValue<float>());
+      Serial.print(s);
+      Serial.println("");
     }
   }
   Serial.println("");

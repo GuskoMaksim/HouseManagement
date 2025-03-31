@@ -10,7 +10,7 @@ class ManagerSerial {
   void SendDebugDataToSerialPort();
 
  public:
-  ManagerSerial();
+  ManagerSerial(const int speed);
   ~ManagerSerial();
   void AddTimer(TimerModel *timer) { timer_ = timer; }
   void AddManagerSensor(ManagerSensor *data) { data_ = data; }
